@@ -25,6 +25,7 @@ CalculatorBody.style.border = "1px solid rgba(0,0,0,0.1)";
 
 let calcScreen = document.createElement("div");
 let calcScreenText = document.createTextNode("No Calculation");
+calcScreen.setAttribute("id", "screen");
 
 calcScreen.style.backgroundColor = "#80b140";
 calcScreen.style.borderRadius ="5px";
@@ -41,6 +42,7 @@ calcScreen.style.fontWeight = "bold";
 
 // clavier simple
 let simpleTouches = document.createElement("div");
+simpleTouches.setAttribute("id", "touches");
 
 simpleTouches.style.display = "grid";
 simpleTouches.style.gridTemplateAreas = '"toprow operands" "mainArea operands"';
@@ -124,7 +126,7 @@ for (cont of CONTROLS){
 }
 
 // clavier SIDEBAR
-const SIDEBAR = ["AC","%","x", "-", "+"];
+const SIDEBAR = ["AC","/","*", "-", "+"];
 let sideId = 0;
 
 let sidebar = document.createElement("div");
@@ -194,7 +196,6 @@ for (scifun of SCIFI){
     sciId++;
 }
 
-
 calcScreen.appendChild(calcScreenText);
 CalculatorBody.appendChild(calcScreen);
 simpleTouches.appendChild(numberTouches);
@@ -204,3 +205,42 @@ CalculatorBody.appendChild(simpleTouches);
 CalculatorBody.appendChild(scifi);
 
 main.appendChild(CalculatorBody);
+
+let onScreenString = "";
+
+function computeResult(str){
+    return Function('return ' + str)();
+}
+
+function fetchNumber(touch){
+
+    let yoplet = touch.innerText;
+
+    if (yoplet == "="){
+        displayScreen(computeResult(onScreenString));
+
+
+    } else if (yoplet == "AC"){
+        onScreenString = "";
+        displayScreen(onScreenString);
+    } else if (yoplet == /(\+|\*|\-|\\)/ ){
+        onScreenString += " " + yoplet + " ";
+        displayScreen(onScreenString);
+    } else if (yoplet == "%"){
+        
+    }
+      else { 
+        onScreenString += yoplet; 
+        displayScreen(onScreenString);
+    }
+
+    console.log(yoplet);
+}
+
+function displayScreen(what){
+    document.getElementById("screen").innerText = what;  
+}
+
+let mainTouches = document.getElementById("touches");
+
+mainTouches.addEventListener('click', (e) => fetchNumber(e.target));
