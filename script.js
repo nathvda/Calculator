@@ -217,6 +217,7 @@ function fetchNumber(touch){
     let yoplet = touch.innerText;
 
     if (yoplet == "="){
+        onScreenString = computeResult(onScreenString); 
         displayScreen(computeResult(onScreenString));
 
 
@@ -227,7 +228,7 @@ function fetchNumber(touch){
         onScreenString += " " + yoplet + " ";
         displayScreen(onScreenString);
     } else if (yoplet == "%"){
-        
+       alert("% is coming soon");         
     }
       else { 
         onScreenString += yoplet; 
@@ -244,3 +245,10 @@ function displayScreen(what){
 let mainTouches = document.getElementById("touches");
 
 mainTouches.addEventListener('click', (e) => fetchNumber(e.target));
+
+window.addEventListener('keyup', (e) => {
+    if (e.key == /[0-9]/){
+    onScreenString += e.key;
+    displayScreen(onScreenString);
+}
+});
