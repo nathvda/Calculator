@@ -22,7 +22,7 @@ CalculatorBody.style.position = "relative";
 CalculatorBody.style.padding = "1em";
 CalculatorBody.style.border = "1px solid rgba(0,0,0,0.1)";
 
-
+// Calculator Screen
 let calcScreen = document.createElement("div");
 let calcScreenText = document.createTextNode("No Calculation");
 calcScreen.setAttribute("id", "screen");
@@ -40,7 +40,7 @@ calcScreen.style.justifyContent = "flex-end";
 calcScreen.style.alignItems = "center";
 calcScreen.style.fontWeight = "bold";
 
-// clavier simple
+// Simple Keyboard
 let simpleTouches = document.createElement("div");
 simpleTouches.setAttribute("id", "touches");
 
@@ -56,7 +56,7 @@ simpleTouches.style.padding = "1em";
 simpleTouches.style.placeItems = "center";
 
 
-// clavier numérique. =
+// Num pad 
 const NUMBERS = [7,8,9,4,5,6,1,2,3,0,".", "="];
 let numId = 0;
 
@@ -93,7 +93,7 @@ for (num of NUMBERS){
 }
 
 
-// clavier controls
+// Keyboard controls, top
 const CONTROLS = ["(",")","%"];
 let contId = 0;
 
@@ -125,7 +125,7 @@ for (cont of CONTROLS){
     contId++;
 }
 
-// clavier SIDEBAR
+// Keyboard controls, right
 const SIDEBAR = ["AC","/","*", "-", "+"];
 let sideId = 0;
 
@@ -160,6 +160,7 @@ for (oper of SIDEBAR){
     sideId++;
 }
 
+// Scientific keyboard
 const SCIFI = ["Rad","Deg","x!", "Inv", "sin", "ln", "π", "cos", "log", "e", "tan", "sqrt", "Ans", "EXP", "x(y)"];
 let sciId = 0;
 
@@ -196,6 +197,7 @@ for (scifun of SCIFI){
     sciId++;
 }
 
+// appends everything.
 calcScreen.appendChild(calcScreenText);
 CalculatorBody.appendChild(calcScreen);
 simpleTouches.appendChild(numberTouches);
@@ -246,9 +248,18 @@ let mainTouches = document.getElementById("touches");
 
 mainTouches.addEventListener('click', (e) => fetchNumber(e.target));
 
-window.addEventListener('keyup', (e) => {
-    if (e.key == /[0-9]/){
-    onScreenString += e.key;
-    displayScreen(onScreenString);
+let scifiTouches = document.getElementById("scifilab");
+
+scifiTouches.addEventListener('click', (e) => fetchNumber(e.target));
+
+function removeLastStep(onScreenString){
+
+    let lastStep = onScreenString.slice(0,-1);
+    displayScreen(lastStep);
+    onScreenString = lastStep;
 }
-});
+
+window.addEventListener("keyup", (e) => {
+    removeLastStep(onScreenString);}
+    );
+
